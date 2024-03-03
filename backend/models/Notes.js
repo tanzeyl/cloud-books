@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongooose;
 
 const NotesSchema = new Schema({
   title: {
