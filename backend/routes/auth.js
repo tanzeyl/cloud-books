@@ -1,12 +1,13 @@
 const express = require("express");
-const router = express.Router();
-const User = require("../models/Users");
-const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { body, validationResult } = require("express-validator");
+const User = require("../models/Users");
+const fetchuser = require("../middleware/fetchUser");
 const JWT_STRING = "secureJSONToken";
+const router = express.Router();
 
-// Create a User using POST => "/api/auth/createUser". Does not require log in.
+// ROUTE 1: Create a User using POST => "/api/auth/createUser". Does not require log in.
 router.post(
   "/createUser",
   [
@@ -50,38 +51,59 @@ router.post(
       const authtoken = jwt.sign(data, JWT_STRING);
       res.json({ authtoken });
     } catch (err) {
-      res.status(500).send("Some error occured.");
+      res.status(500).send("Internal server error.");
     }
   }
 );
 
-// Log-in User using POST => "/api/auth/login". Requires log-in
-// router.post(
-//   "/login",
-//   [body("email").notEmpty().isEmail(), body("password").notEmpty()],
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(400).json({ errors: errors.array() });
-//     }
-//     const salt = await bcrypt.genSalt(10);
-//     const securePassword = await bcrypt.hash(req.body.password, salt);
-//     try {
-//       let user = await User.findOne({ email: req.body.email });
-//       if (!user) {
-//         return res
-//           .status(400)
-//           .json({ message: "This email does not exist. Kindly sign-up!" });
-//       }
-//       if (user.password === securePassword) {
-//         return res.send(`${req.body.email} has been logged in.`);
-//       } else {
-//         return res.send(`Password incorrect.`);
-//       }
-//     } catch (err) {
-//       res.status(500).send("Some error occured.");
-//     }
-//   }
-// );
+// ROUTE 2: Authenticate a User using POST => "/api/auth/login". No log-in required
+router.post(
+  "/login",
+  [
+    body("email", "Please enter a valid email.").notEmpty().isEmail(),
+    body("password", "Password cannot be blank.").notEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { email, password } = req.body;
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: "Please try again with correct credentials." });
+      }
+      const compare = await bcrypt.compare(password, user.password);
+      if (!compare) {
+        return res
+          .status(400)
+          .json({ message: "Please try again with correct credentials." });
+      }
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authtoken = jwt.sign(data, JWT_STRING);
+      res.json({ authtoken });
+    } catch (err) {
+      res.status(500).send("Internal server error.");
+    }
+  }
+);
+
+// ROUTE 3: Get logged-in User details using POST. Requires log-in.
+router.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let user = await User.findById(userId).select("-password");
+    res.send(user);
+  } catch (err) {
+    res.status(500).send("Internal server error.");
+  }
+});
 
 module.exports = router;
