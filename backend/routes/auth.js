@@ -95,7 +95,7 @@ router.post(
   }
 );
 
-// ROUTE 3: Get logged-in User details using POST. Requires log-in.
+// ROUTE 3: Get logged-in User details using POST. => api/auth/getuser Requires log-in.
 router.post("/getuser", fetchuser, async (req, res) => {
   try {
     const userId = req.user.id;
