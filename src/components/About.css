@@ -1,0 +1,201 @@
+body {
+  background-color: #fff;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.mainSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container2 {
+  background-color: rgb(240, 105, 105);
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  border-radius: 50px;
+  padding: 1%;
+  text-align: center;
+  position: relative;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  right: 0;
+  left: 0;
+}
+
+.profileImage {
+  border-radius: 50%;
+  border: 3px solid rgb(97, 44, 44);
+  padding: 1%;
+  margin: 2%;
+  margin-top: 4%;
+  background-color: black;
+}
+
+.mainName {
+  font-size: 25px;
+  font-weight: 700;
+  transition: color 0.5s;
+}
+
+.mainName:hover {
+  color: rgb(73, 3, 3);
+}
+
+.tagline {
+  font-weight: 600;
+  font-size: 16px;
+  color: black;
+  padding-top: 1%;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: white;
+  margin: 2%;
+}
+
+.button {
+  margin: 3% 1%;
+  font-size: 25px;
+  padding: 2%;
+  border-radius: 25px;
+  background-color: rgba(255, 53, 53, 0.7);
+  border-style: none;
+  background-color: #131010;
+  color: #ff8282;
+  transition: color 1s linear;
+}
+
+.button:hover {
+  color: #871717;
+}
+
+.footer {
+  font-size: 20px;
+  font-weight: 100;
+  color: rgb(47, 44, 44);
+}
+
+.footer ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.footer > ul > li {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-right: 2px solid black;
+  padding: 0 10px;
+}
+
+.footer > ul > li:nth-child(3) {
+  border: none;
+}
+
+.rotation {
+  width: 105%;
+  height: 105%;
+  left: -11px;
+  bottom: 20px;
+  top: 16px;
+  border-radius: 50px;
+  position: absolute;
+  margin: auto;
+  z-index: -10;
+  --angle: 0deg;
+  filter: blur(20px);
+  opacity: 100%;
+  background-image: conic-gradient(
+    from var(--angle),
+    #ff008c,
+    #00ffea,
+    #ff0000,
+    #6200ff,
+    #00a2ff,
+    #ffae00,
+    #8c00ff,
+    #00ff44
+  );
+  animation: 5s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@media only screen and (max-width: 600px) {
+}
+
+@media only screen and (max-width: 768px) and (min-width: 600px) {
+  .mainSection {
+    margin-top: 30%;
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  .rotation {
+    width: 105%;
+    height: 105%;
+    left: -25px;
+  }
+}
+
+@media only screen and (max-width: 992px) and (min-width: 768px) {
+  .mainSection {
+    margin-top: 30%;
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  .rotation {
+    width: 105%;
+    height: 105%;
+    left: -25px;
+  }
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 992px) {
+  .container {
+    width: 90%;
+  }
+
+  .rotation {
+    width: 105%;
+    height: 105%;
+    left: -25px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+}
