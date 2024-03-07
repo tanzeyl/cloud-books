@@ -32,6 +32,7 @@ router.post(
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res.status(400).json({
+          success: false,
           error: "A user with this email exists already! Kindly log-in.",
         });
       }
@@ -49,9 +50,11 @@ router.post(
         },
       };
       const authtoken = jwt.sign(data, JWT_STRING);
-      res.json({ authtoken });
+      res.json({ success: true, authtoken });
     } catch (err) {
-      res.status(500).send("Internal server error.");
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error." });
     }
   }
 );
@@ -66,21 +69,23 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      res.status(400).json({ success: false, errors: errors.array() });
     }
     try {
       const { email, password } = req.body;
       let user = await User.findOne({ email });
       if (!user) {
-        return res
-          .status(400)
-          .json({ message: "Please try again with correct credentials." });
+        return res.status(400).json({
+          success: false,
+          message: "Please try again with correct credentials.",
+        });
       }
       const compare = await bcrypt.compare(password, user.password);
       if (!compare) {
-        return res
-          .status(400)
-          .json({ message: "Please try again with correct credentials." });
+        return res.status(400).json({
+          success: false,
+          message: "Please try again with correct credentials.",
+        });
       }
       const data = {
         user: {
@@ -88,9 +93,11 @@ router.post(
         },
       };
       const authtoken = jwt.sign(data, JWT_STRING);
-      res.json({ authtoken });
+      res.json({ success: true, authtoken });
     } catch (err) {
-      res.status(500).send("Internal server error.");
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error." });
     }
   }
 );
@@ -100,9 +107,9 @@ router.post("/getuser", fetchuser, async (req, res) => {
   try {
     const userId = req.user.id;
     let user = await User.findById(userId).select("-password");
-    res.send(user);
+    res.json({ success: true, user });
   } catch (err) {
-    res.status(500).send("Internal server error.");
+    res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
 

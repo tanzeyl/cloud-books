@@ -98,4 +98,16 @@ router.delete("/deleteNote/:id", fetchuser, async (req, res) => {
   }
 });
 
+// ROUTE 5: Fetch all notes with a certain word in the tag. => /api/note/filterNotes. Requires log-in.
+router.post("/filterNotes", fetchuser, async (req, res) => {
+  try {
+    const notes = await Note.find({ user: req.user.id });
+    const regex = new RegExp(`\\w*${req.body.query}\\w*`, "i");
+    const filteredNotes = notes.filter((note) => regex.test(note.tag));
+    res.json(filteredNotes);
+  } catch (err) {
+    return res.status(500).send("Internal server error.");
+  }
+});
+
 module.exports = router;
