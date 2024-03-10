@@ -11,7 +11,6 @@ const Notes = (props) => {
 
   const contextNote = useContext(NoteContext);
   const { notes, getNotes, editNote, filterNotes } = contextNote;
-  4;
 
   const [note, setNote] = useState({
     id: "",
