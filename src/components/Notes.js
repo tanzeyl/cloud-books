@@ -5,11 +5,14 @@ import AddNoteForm from "./AddNoteForm";
 import { useNavigate } from "react-router-dom";
 
 const Notes = (props) => {
-  let contextNote = useContext(NoteContext);
   const navigate = useNavigate();
-  const { notes, getNotes, editNote, filterNotes } = contextNote;
   const ref = useRef(null);
   const refClose = useRef(null);
+
+  const contextNote = useContext(NoteContext);
+  const { notes, getNotes, editNote, filterNotes } = contextNote;
+  4;
+
   const [note, setNote] = useState({
     id: "",
     etitle: "",
@@ -56,6 +59,8 @@ const Notes = (props) => {
   return (
     <>
       <AddNoteForm showAlert={props.showAlert} />
+
+      {/* Edit Note Modal */}
       <button
         type="button"
         className="btn btn-primary d-none"

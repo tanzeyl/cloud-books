@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import NoteContext from "../context/notes/noteContext";
 
 const NoteItem = (props) => {
-  let contextNote = useContext(NoteContext);
+  const contextNote = useContext(NoteContext);
   const { deleteNote } = contextNote;
   const { note, updateNote } = props;
+
   return (
     <>
       <div className="col-md-3">

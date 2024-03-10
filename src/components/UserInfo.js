@@ -3,16 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   document.title = "CloudBooks - User Details";
+  const url = "http://localhost:5000";
+
   const navigate = useNavigate();
+
   const [details, setDetails] = useState({
     name: "",
     email: "",
     country: "",
     state: "",
     city: "",
+    notification: [],
   });
+
   const getUserDetails = async () => {
-    const url = "http://localhost:5000";
     const response = await fetch(`${url}/api/auth/getuser`, {
       method: "POST",
       headers: {
@@ -32,6 +36,7 @@ const UserInfo = () => {
     }
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <div className="container">

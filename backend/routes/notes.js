@@ -1,8 +1,9 @@
 const express = require("express");
+const { body, validationResult } = require("express-validator");
 const router = express.Router();
+
 const Note = require("../models/Notes");
 const fetchuser = require("../middleware/fetchuser");
-const { body, validationResult } = require("express-validator");
 
 // ROUTE 1: Get all the notes of logged-in User. => api/notes/getAllNotes Required log-in.
 router.get("/getAllNotes", fetchuser, async (req, res) => {

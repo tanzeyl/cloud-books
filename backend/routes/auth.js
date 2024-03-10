@@ -2,10 +2,12 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
-const User = require("../models/Users");
-const fetchuser = require("../middleware/fetchUser");
-const JWT_STRING = "secureJSONToken";
 const router = express.Router();
+
+const User = require("../models/Users");
+const fetchuser = require("../middleware/fetchuser");
+
+const JWT_STRING = "secureJSONToken";
 
 // ROUTE 1: Create a User using POST => "/api/auth/createUser". Does not require log in.
 router.post(
@@ -43,6 +45,7 @@ router.post(
         country: req.body.country,
         state: req.body.state,
         city: req.body.city,
+        notification: [],
       });
       const data = {
         user: {
@@ -93,7 +96,7 @@ router.post(
         },
       };
       const authtoken = jwt.sign(data, JWT_STRING);
-      res.json({ success: true, authtoken });
+      res.json({ success: true, authtoken, notification: user.notification });
     } catch (err) {
       res
         .status(500)

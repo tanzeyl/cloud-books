@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   document.title = "CloudBooks - Sign Up";
+  const url = "http://localhost:5000";
+
+  const navigate = useNavigate();
+
   const [details, setDetails] = useState({
     name: "",
     email: "",
@@ -11,8 +15,6 @@ const Signup = () => {
     state: "",
     city: "",
   });
-  const url = "http://localhost:5000";
-  let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
